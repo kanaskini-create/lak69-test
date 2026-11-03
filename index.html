@@ -1,0 +1,201 @@
+<title>Лак69</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Tektur:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка, главный жест страницы это шкала толщины лака в микронах.
+   Типографика: Tektur (приборный заголовок), Onest (текст), JetBrains Mono (цифры замеров). */
+:root {
+  --bg: #e8ebed;
+  --surface: #f5f6f7;
+  --fg: #12161a;
+  --muted: #55606a;
+  --line: #c6cdd3;
+  --accent: #0b5d7a;
+  --accent-fg: #ffffff;
+  --layer-primer: #9aa5ad;
+  --layer-base: #5f6d77;
+  --layer-clear: #bfe0ec;
+  --removed: #0b5d7a;
+  --font-display: "Tektur", "Arial Narrow", sans-serif;
+  --font-body: "Onest", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1216; --surface: #151b20; --fg: #e8ecef; --muted: #98a4ad; --line: #2a343c;
+    --accent: #5bbbe0; --accent-fg: #07151c;
+    --layer-primer: #4a565f; --layer-base: #7b8a95; --layer-clear: #2c5a6d; --removed: #5bbbe0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1216; --surface: #151b20; --fg: #e8ecef; --muted: #98a4ad; --line: #2a343c;
+  --accent: #5bbbe0; --accent-fg: #07151c;
+  --layer-primer: #4a565f; --layer-base: #7b8a95; --layer-clear: #2c5a6d; --removed: #5bbbe0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 32px;
+}
+.wrap { max-width: 880px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.08; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.label { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: .02em; }
+.brand span { color: var(--accent); }
+.phone { font-family: var(--font-mono); font-size: 14px; color: var(--fg); text-decoration: none; }
+
+.hero { padding-block: 40px 28px; display: grid; gap: 22px; }
+.hero h1 { font-size: clamp(34px, 8.5vw, 64px); }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p.lead { max-width: 54ch; color: var(--muted); font-size: 18px; }
+.cta { display: inline-block; justify-self: start; background: var(--accent); color: var(--accent-fg); text-decoration: none; font-weight: 600; padding: 14px 22px; border-radius: 4px; border: 0; font-size: 16px; font-family: var(--font-body); cursor: pointer; }
+.cta:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.gauge { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 14px; }
+.gauge-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.reading { font-family: var(--font-mono); font-size: 28px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.reading small { font-size: 13px; color: var(--muted); margin-left: 4px; }
+.bar { display: flex; height: 54px; border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+.bar > div { height: 100%; }
+.l-primer { width: 29%; background: var(--layer-primer); }
+.l-base { width: 25%; background: var(--layer-base); }
+.l-clear { width: 43%; background: var(--layer-clear); }
+.l-removed { width: 3%; background: repeating-linear-gradient(135deg, var(--removed) 0 3px, transparent 3px 6px); }
+.ticks { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 16px; font-size: 14px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border: 1px solid var(--line); vertical-align: -1px; }
+.legend .lp i { background: var(--layer-primer); }
+.legend .lb i { background: var(--layer-base); }
+.legend .lc i { background: var(--layer-clear); }
+.legend .lr i { background: repeating-linear-gradient(135deg, var(--removed) 0 2px, transparent 2px 4px); }
+.gauge-note { font-size: 14px; color: var(--muted); max-width: 62ch; }
+
+section { padding-block: 36px 8px; display: grid; gap: 16px; }
+section h2 { font-size: clamp(26px, 5.5vw, 36px); }
+
+.prices { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.prices li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.prices .name { min-width: 0; }
+.prices .name b { font-weight: 600; display: block; }
+.prices .name span { color: var(--muted); font-size: 14px; }
+.prices .cost { font-family: var(--font-mono); font-size: 15px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.step { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.step h3 { font-size: 18px; }
+.step p { color: var(--muted); font-size: 14.5px; }
+
+form { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 14px; }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 14px; font-weight: 500; }
+input, select { font: inherit; width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--fg); }
+#status { font-size: 14px; color: var(--muted); min-height: 1.4em; }
+
+footer { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line); display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+footer .demo { font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Лак<span>69</span></div>
+    <a class="phone" href="#zapis">+7 (000) 000-00-00</a>
+  </header>
+
+  <div class="hero">
+    <p class="label">Детейлинг-студия · Тверь</p>
+    <h1>Блеск, который <em>измеряется в микронах</em></h1>
+    <p class="lead">Перед полировкой мы замеряем толщину лака и снимаем только то, что нужно. Машина получает глубокий цвет, а заводской слой остаётся на месте.</p>
+    <a class="cta" href="#zapis">Записаться на осмотр</a>
+  </div>
+
+  <div class="gauge" role="img" aria-label="Схема слоёв краски: грунт, база, лак. Полировка снимает около 3 микрон из 120.">
+    <div class="gauge-head">
+      <p class="label">Замер толщиномером</p>
+      <p class="reading">120<small>мкм</small></p>
+    </div>
+    <div class="bar">
+      <div class="l-primer"></div>
+      <div class="l-base"></div>
+      <div class="l-clear"></div>
+      <div class="l-removed"></div>
+    </div>
+    <div class="ticks"><span>0</span><span>30</span><span>60</span><span>90</span><span>120</span></div>
+    <div class="legend">
+      <span class="lp"><i></i>Грунт, 35 мкм</span>
+      <span class="lb"><i></i>База, 30 мкм</span>
+      <span class="lc"><i></i>Лак, 52 мкм</span>
+      <span class="lr"><i></i>Снимаем, 3 мкм</span>
+    </div>
+    <p class="gauge-note">Цифры показаны для примера. На осмотре мы замеряем каждую панель и говорим, сколько лака можно безопасно снять. Если запаса мало, предлагаем защиту без полировки.</p>
+  </div>
+
+  <section id="uslugi">
+    <h2>Услуги и цены</h2>
+    <ul class="prices">
+      <li><div class="name"><b>Мойка и деконтаминация кузова</b><span>Глина, удаление металлических вкраплений, сушка</span></div><div class="cost">от 3 500 ₽</div></li>
+      <li><div class="name"><b>Одноэтапная полировка</b><span>Убирает мелкие паутинки и возвращает блеск</span></div><div class="cost">от 12 000 ₽</div></li>
+      <li><div class="name"><b>Полировка в 2–3 этапа</b><span>Для глубоких царапин и потускневшего лака</span></div><div class="cost">от 22 000 ₽</div></li>
+      <li><div class="name"><b>Керамическое покрытие</b><span>Два слоя, срок защиты до 2 лет</span></div><div class="cost">от 28 000 ₽</div></li>
+      <li><div class="name"><b>Химчистка салона</b><span>Сиденья, потолок, пластик, коврики</span></div><div class="cost">от 9 000 ₽</div></li>
+      <li><div class="name"><b>Полировка фар</b><span>Комплект, с защитным лаком</span></div><div class="cost">от 3 000 ₽</div></li>
+    </ul>
+  </section>
+
+  <section id="process">
+    <h2>Как проходит работа</h2>
+    <div class="steps">
+      <div class="step"><p class="label">Шаг 1</p><h3>Мойка и осмотр</h3><p>Моем, чистим глиной и осматриваем кузов под лампой.</p></div>
+      <div class="step"><p class="label">Шаг 2</p><h3>Замер ЛКП</h3><p>Проверяем толщину на каждой панели и находим перекрашенные места.</p></div>
+      <div class="step"><p class="label">Шаг 3</p><h3>Полировка</h3><p>Подбираем пасту и круг на тестовом участке, затем идём по кузову.</p></div>
+      <div class="step"><p class="label">Шаг 4</p><h3>Защита</h3><p>Наносим керамику или воск, отдаём машину с гарантийным листом.</p></div>
+    </div>
+  </section>
+
+  <section id="zapis">
+    <h2>Запись на осмотр</h2>
+    <form id="booking">
+      <div class="fields">
+        <div class="field"><label for="name">Имя</label><input id="name" type="text" autocomplete="name" placeholder="Иван" required></div>
+        <div class="field"><label for="tel">Телефон</label><input id="tel" type="tel" autocomplete="tel" placeholder="+7" required></div>
+        <div class="field"><label for="car">Автомобиль</label><input id="car" type="text" placeholder="Volkswagen Polo, 2013"></div>
+        <div class="field"><label for="service">Что нужно</label>
+          <select id="service">
+            <option>Полировка кузова</option>
+            <option>Керамическое покрытие</option>
+            <option>Химчистка салона</option>
+            <option>Полировка фар</option>
+            <option>Не знаю, нужен осмотр</option>
+          </select>
+        </div>
+      </div>
+      <button class="cta" type="submit">Отправить заявку</button>
+      <p id="status" role="status"></p>
+    </form>
+  </section>
+
+  <footer>
+    <p>Тверь, адрес и время работы появятся после запуска студии.</p>
+    <p class="demo">ДЕМО-МАКЕТ. Название, цены и контакты вымышлены, форма заявки ничего не отправляет.</p>
+  </footer>
+</div>
+
+<script>
+document.getElementById('booking').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var n = document.getElementById('name').value.trim();
+  document.getElementById('status').textContent =
+    'Спасибо' + (n ? ', ' + n : '') + '. Это демо-страница, заявка никуда не отправлена.';
+});
+</script>
